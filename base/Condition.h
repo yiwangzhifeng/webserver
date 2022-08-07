@@ -4,12 +4,12 @@
 #include"MutexLock.h"
 #include"noncopyable.h"
 
-class ConditionLock:noncopyable{
+class Condition:noncopyable{
     public:
-        explicit ConditionLock(MutexLock &mutex_):mutex(mutex_){
+        explicit Condition(MutexLock &mutex_):mutex(mutex_){
             pthread_cond_init(&cond,NULL);
         }
-        ~ConditionLock(){pthread_cond_destroy(&cond);}
+        ~Condition(){pthread_cond_destroy(&cond);}
         void wait(){pthread_cond_wait(&cond,mutex.get());}
         void signal(){pthread_cond_signal(&cond);}
         void signalAll(){pthread_cond_broadcast(&cond);}

@@ -1,6 +1,6 @@
 #pragma once
 #include"MutexLock.h"
-#include"ConditionLock.h"
+#include"Condition.h"
 
 class CountDownLatch:noncopyable{
     public:
@@ -16,6 +16,6 @@ class CountDownLatch:noncopyable{
         }
     private:
         mutable MutexLock mutex;
-        ConditionLock cond;
+        Condition cond;
         int count;
 };

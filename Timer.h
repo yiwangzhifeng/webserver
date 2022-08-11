@@ -2,6 +2,7 @@
 #include <memory>
 #include <queue>
 #include "HttpData.h"
+class HttpData;
 class TimerNode
 {
 public:

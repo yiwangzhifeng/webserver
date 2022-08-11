@@ -3,8 +3,7 @@
 #include <vector>
 #include "Channel.h"
 #include "Timer.h"
-// #include "HttpData.h"
-
+#include"HttpData.h"
 class Epoll
 {
 public:

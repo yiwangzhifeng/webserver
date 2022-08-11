@@ -22,7 +22,7 @@ void Epoll::epoll_add(SP_Channel request, int timeout)
     struct epoll_event event;
     event.data.fd = fd;
     event.events = request->getEvents();
-    request->EqualAndUpdaateLastEvents();
+    request->EqualAndUpdateLastEvents();
     fd2chan_[fd] = request;
     if (epoll_ctl(epollFd_, EPOLL_CTL_ADD, fd, &event) < 0)
     {
@@ -35,8 +35,8 @@ void Epoll::epoll_mod(SP_Channel request, int timeout)
     if (timeout > 0)
         add_timer(request, timeout);
     int fd = request->getFd();
-    if (!request->EqualAndUpdaateLastEvents())
-    {
+    if (!request->EqualAndUpdateLastEvents())
+    {             
         struct epoll_event event;
         event.data.fd = fd;
         event.events = request->getEvents();
@@ -99,7 +99,7 @@ std::vector<SP_Channel> Epoll::getEventsRequest(int events_num)
 void Epoll::add_timer(SP_Channel request_data, int timeout)
 {
     std::shared_ptr<HttpData> t = request_data->getHolder();
-    if (t)
+    if (t!=NULL)
         timerManager_.addTimer(t, timeout);
     else
         LOG << "timer add fail";

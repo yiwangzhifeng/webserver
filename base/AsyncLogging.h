@@ -1,4 +1,5 @@
 #pragma once
+#include<vector>
 #include"noncopyable.h"
 #include"Thread.h"
 #include"Condition.h"

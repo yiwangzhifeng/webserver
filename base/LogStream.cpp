@@ -1,6 +1,6 @@
 #pragma once
 #include"LogStream.h"
-
+#include<algorithm>
 const char digits[]="9876543210123456789";
 const char *zero=digits+9;
 
@@ -9,7 +9,7 @@ size_t convert(char buf[],T value){
     T i=value;
     char *p=buf;
     do{
-        int lsd=static_cast<int>(i%10);
+        int lsd=static_cast<int>(i % 10);
         i/=10;
         *p++=zero[lsd];
     }while(i!=0);
@@ -24,7 +24,7 @@ template class FixedBuffer<kSmallBuffer>;
 template class FixedBuffer<kLargeBuffer>;
 
 template<typename T>
-void LogStream::formatInteger(T){
+void LogStream::formatInteger(T v){
     if(buffer_.avail()>=kMaxNumericSize){
         size_t len=convert(buffer_.current(),v);
         buffer_.add(len);
@@ -55,11 +55,17 @@ LogStream &LogStream::operator<<(unsigned long long v){
     return *this;
 }
 LogStream &LogStream::operator<<(double v){
-    formatInteger(v);
+    if (buffer_.avail() >= kMaxNumericSize) {
+        int len = snprintf(buffer_.current(), kMaxNumericSize, "%.12g", v);
+        buffer_.add(len);
+    }
     return *this;
 }
 LogStream &LogStream::operator<<(long double v){
-    formatInteger(v);
+    if (buffer_.avail() >= kMaxNumericSize) {
+        int len = snprintf(buffer_.current(), kMaxNumericSize, "%.12Lg", v);
+        buffer_.add(len);
+    }
     return *this;
 }
 LogStream& LogStream::operator<<(short v) {

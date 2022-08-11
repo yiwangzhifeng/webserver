@@ -6,8 +6,6 @@
 #include "Channel.h"
 #include "EventLoop.h"
 #include "Util.h"
-#include "time.h"
-using namespace std;
 pthread_once_t MimeType::once_control = PTHREAD_ONCE_INIT;
 std::unordered_map<std::string, std::string> MimeType::mime;
 const __uint32_t DEFAULT_EVENT = EPOLLIN | EPOLLET | EPOLLONESHOT;
@@ -129,7 +127,7 @@ void HttpData::reset()
     headers_.clear();
     if (timer_.lock())
     {
-        shared_ptr<TimerNode> my_timer(timer_.lock());
+        std::shared_ptr<TimerNode> my_timer(timer_.lock());
         my_timer->clearReq();
         timer_.reset();
     }
@@ -138,7 +136,7 @@ void HttpData::seperateTimer()
 {
     if (timer_.lock())
     {
-        shared_ptr<TimerNode> my_timer(timer_.lock());
+        std::shared_ptr<TimerNode> my_timer(timer_.lock());
         my_timer->clearReq();
         timer_.reset();
     }
@@ -535,7 +533,7 @@ AnalysisState HttpData::analysisRequest()
         {
             keepAlive_ = true;
             header += string("Connection: Keep-Alive\r\n") + "Keep-Alive: timeout=" +
-                      to_string(DEFAULT_KEEP_ALIVE_TIME) + "\r\n";
+                      std::to_string(DEFAULT_KEEP_ALIVE_TIME) + "\r\n";
         }
         int dot_pos = fileName_.find('.');
         string filetype;
@@ -553,7 +551,7 @@ AnalysisState HttpData::analysisRequest()
         if (fileName_ == "favicon.ico")
         {
             header += "Content-Type: image/png\r\n";
-            header += "Content-Length: " + to_string(sizeof favicon) + "\r\n";
+            header += "Content-Length: " + std::to_string(sizeof favicon) + "\r\n";
             header += "Server: LinYa's Web Server\r\n";
 
             header += "\r\n";
@@ -571,7 +569,7 @@ AnalysisState HttpData::analysisRequest()
             return ANALYSIS_ERROR;
         }
         header += "Content-Type: " + filetype + "\r\n";
-        header += "Content-Length: " + to_string(sbuf.st_size) + "\r\n";
+        header += "Content-Length: " + std::to_string(sbuf.st_size) + "\r\n";
         header += "Server: LinYa's Web Server\r\n";
         header += "\r\n";
         outBuffer_ += header;
@@ -611,13 +609,13 @@ void HttpData::handleError(int fd, int err_num, string short_msg)
     string body_buff, header_buff;
     body_buff += "<html><title>³ö´íÁË</title>";
     body_buff += "<body bgcolor=\"ffffff\">";
-    body_buff += to_string(err_num) + short_msg;
+    body_buff += std::to_string(err_num) + short_msg;
     body_buff += "<hr><em> LinYa's Web Server</em>\n</body></html>";
 
-    header_buff += "HTTP/1.1 " + to_string(err_num) + short_msg + "\r\n";
+    header_buff += "HTTP/1.1 " + std::to_string(err_num) + short_msg + "\r\n";
     header_buff += "Content-Type: text/html\r\n";
     header_buff += "Connection: Close\r\n";
-    header_buff += "Content-Length: " + to_string(body_buff.size()) + "\r\n";
+    header_buff += "Content-Length: " + std::to_string(body_buff.size()) + "\r\n";
     header_buff += "Server: LinYa's Web Server\r\n";
     
     header_buff += "\r\n";
@@ -630,7 +628,7 @@ void HttpData::handleError(int fd, int err_num, string short_msg)
 void HttpData::handleClose()
 {
     connectionState_ = H_DISCONNECTED;
-    shared_ptr<HttpData> guard(shared_from_this());
+    std::shared_ptr<HttpData> guard(shared_from_this());
     loop_->removeFromPoller(channel_);
 }
 

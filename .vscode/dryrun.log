@@ -1,0 +1,9 @@
+make --dry-run --keep-going --print-directory
+make: Entering directory '/home/yiwangzhifeng/Desktop/webserver'
+g++ -std=c++11 -g -Wall -O3 -D_PTHREADS -o WebServer Channel.o Epoll.o EventLoop.o EventLoopThread.o EventLoopThreadPool.o HttpData.o Server.o Timer.o Util.o base/AsyncLogging.o base/FileUtil.o base/LogFile.o base/LogStream.o base/Logging.o base/Thread.o Main.o  -lpthread
+g++ -std=c++11 -g -Wall -O3 -D_PTHREADS   -c -o base/tests/LoggingTest.o base/tests/LoggingTest.cpp
+g++ -std=c++11 -g -Wall -O3 -D_PTHREADS -o LoggingTest Channel.o Epoll.o EventLoop.o EventLoopThread.o EventLoopThreadPool.o HttpData.o Server.o Timer.o Util.o base/AsyncLogging.o base/FileUtil.o base/LogFile.o base/LogStream.o base/Logging.o base/Thread.o base/tests/LoggingTest.o  -lpthread
+make: Leaving directory '/home/yiwangzhifeng/Desktop/webserver'
+ 
+make: *** No rule to make target 'tests/HTTPClient.o', needed by 'HTTPClient'.
+

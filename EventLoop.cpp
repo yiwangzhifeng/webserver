@@ -4,7 +4,6 @@
 #include <iostream>
 #include "Util.h"
 #include "base/Logging.h"
-using namespace std;
 __thread EventLoop *t_loopInThisThread = 0;
 int createEventfd()
 {
@@ -34,8 +33,8 @@ EventLoop::EventLoop()
         t_loopInThisThread = this;
     }
     pwakeupChannel_->setEvents(EPOLLIN | EPOLLET);
-    pwakeupChannel_->setReadHandler(bind(&EventLoop::handleRead, this));
-    pwakeupChannel_->setConnHandler(bind(&EventLoop::handleConn, this));
+    pwakeupChannel_->setReadHandler(std::bind(&EventLoop::handleRead, this));
+    pwakeupChannel_->setConnHandler(std::bind(&EventLoop::handleConn, this));
     poller_->epoll_add(pwakeupChannel_, 0);
 }
 void EventLoop::handleConn()

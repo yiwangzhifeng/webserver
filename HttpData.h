@@ -7,9 +7,6 @@
 #include <string>
 #include <unordered_map>
 #include "Timer.h"
-class EventLoop;
-class TimerNode;
-class Channel;
 enum ProcessState
 {
     STATE_PARSE_URI = 1,

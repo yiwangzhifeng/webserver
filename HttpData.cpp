@@ -559,7 +559,7 @@ AnalysisState HttpData::analysisRequest()
             header += "\r\n";
             outBuffer_ += header;
             outBuffer_ += string(favicon, favicon + sizeof favicon);
-            ;
+            
             return ANALYSIS_SUCCESS;
         }
 
@@ -597,7 +597,7 @@ AnalysisState HttpData::analysisRequest()
         }
         char *src_addr = static_cast<char *>(mmapRet);
         outBuffer_ += string(src_addr, src_addr + sbuf.st_size);
-        ;
+        
         munmap(mmapRet, sbuf.st_size);
         return ANALYSIS_SUCCESS;
     }
@@ -609,7 +609,7 @@ void HttpData::handleError(int fd, int err_num, string short_msg)
     short_msg = " " + short_msg;
     char send_buff[4096];
     string body_buff, header_buff;
-    body_buff += "<html><title>å“Ž~å‡ºé”™äº?</title>";
+    body_buff += "<html><title>³ö´íÁË</title>";
     body_buff += "<body bgcolor=\"ffffff\">";
     body_buff += to_string(err_num) + short_msg;
     body_buff += "<hr><em> LinYa's Web Server</em>\n</body></html>";
@@ -619,7 +619,7 @@ void HttpData::handleError(int fd, int err_num, string short_msg)
     header_buff += "Connection: Close\r\n";
     header_buff += "Content-Length: " + to_string(body_buff.size()) + "\r\n";
     header_buff += "Server: LinYa's Web Server\r\n";
-    ;
+    
     header_buff += "\r\n";
     sprintf(send_buff, "%s", header_buff.c_str());
     writen(fd, send_buff, strlen(send_buff));

@@ -1,7 +1,7 @@
 #pragma once
 #include<string>
 #include"LogStream.h"
-#define LOG Logger(__FILE__,__LINE__).stream
+#define LOG Logger(__FILE__,__LINE__).stream()
 class AsyncLogging;
 class Logger{
     public:
